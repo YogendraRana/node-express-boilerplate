@@ -38,7 +38,7 @@ userSchema.methods.comparePassword = async function (password) {
 
 
 // create access token
-userSchema.methods.createAccessToken = function (expiresIn='1d') {
+userSchema.methods.createAccessToken = function (expiresIn) {
     return jwt.sign({ _id: this._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn });
 }
 

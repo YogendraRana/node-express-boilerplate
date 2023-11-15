@@ -45,7 +45,7 @@ export const handleLogin = catchAsyncError(async (req, res, next) => {
     if (!passwordMatched) return next(new ErrorHandler('Invalid credentials!', 400));
 
     // create tokens 
-    const accessToken = foundUser.createAccessToken('5min');
+    const accessToken = foundUser.createAccessToken('30s');
     const refreshToken = foundUser.createRefreshToken();
 
     // save refresh token in database

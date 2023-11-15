@@ -4,6 +4,6 @@ import * as authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.route('/admin').get(authMiddleware.verifyAccessToken, adminController.getUsers);
+router.route('/users').get(authMiddleware.verifyAccessToken, adminController.getUsers);
 
 export default router;

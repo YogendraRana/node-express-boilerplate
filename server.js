@@ -37,7 +37,7 @@ app.listen(PORT, () => console.log(`Listening on port number ${PORT}`));
 
 // routes
 app.use("/api/v1/auth", authRoutes)
-app.use("/api/v1", adminRoutes)
+app.use("/api/v1/admin", adminRoutes)
 
 // error middleware
 app.use(ErrorMiddleware);

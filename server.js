@@ -36,7 +36,7 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Listening on port number ${PORT}`));
 
 // routes
-app.use("/api/v1", authRoutes)
+app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1", adminRoutes)
 
 // error middleware

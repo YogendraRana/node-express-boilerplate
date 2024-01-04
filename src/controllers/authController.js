@@ -14,12 +14,11 @@ export const handleRegister = catchAsyncError(async (req, res, next) => {
     const user = await User.create({ name, email, password });
 
     // create tokens
-    const accessToken = user.createAccessToken('5min');
-    const refreshToken = user.createRefreshToken();
+    const accessToken = user.createAccessToken('1d');
+    const refreshToken = user.createRefreshToken('7d');
 
     // save refresh token in database
     user.refreshToken = refreshToken;
-    user.refreshTokenExpireAt = Date.now() + 24 * 60 * 60 * 1000;
     await user.save();
 
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
@@ -45,15 +44,19 @@ export const handleLogin = catchAsyncError(async (req, res, next) => {
     if (!passwordMatched) return next(new ErrorHandler('Invalid credentials!', 400));
 
     // create tokens 
-    const accessToken = foundUser.createAccessToken('30s');
-    const refreshToken = foundUser.createRefreshToken();
+    const accessToken = foundUser.createAccessToken('1d');
+    const refreshToken = foundUser.createRefreshToken('7d');
 
     // save refresh token in database
     foundUser.refreshToken = refreshToken;
-    foundUser.refreshTokenExpireAt = Date.now() + 24 * 60 * 60 * 1000;
     await foundUser.save();
 
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(200).json({
         success: true,
@@ -69,14 +72,15 @@ export const handleLogin = catchAsyncError(async (req, res, next) => {
 // logout controller
 export const handleLogout = catchAsyncError(async (req, res, next) => {
     const { refreshToken } = req.cookies;
-    if (!refreshToken) return next (new ErrorHandler('No token found!', 401));
-    const foundUser = await User.findOne({ refreshToken: refreshToken });
+    if (!refreshToken) return next(new ErrorHandler('No token found!', 401));
+    const foundUser = await User.findOne({ refreshToken });
     if (!foundUser) return next(new ErrorHandler('User does not exist!', 403));
 
     // delete refresh token from database
     foundUser.refreshToken = '';
     await foundUser.save();
 
+    // delete cookie
     res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'none' });
 
     res.status(200).json({

@@ -2,16 +2,16 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import cookieParser from 'cookie-parser';
-import { connectdb } from './config/database.js';
-import { corsOptions } from './config/corsOptions.js';
-import { credentials } from './middlewares/credentialsMiddleware.js';
+import { connectdb } from './src/config/database.js';
+import { corsOptions } from './src/config/corsOptions.js';
+import { credentials } from './src/middlewares/credentialsMiddleware.js';
 
 // import middleware
-import ErrorMiddleware from './middlewares/errorMiddleware.js';
+import ErrorMiddleware from './src/middlewares/errorMiddleware.js';
 
 // import routes
-import authRoutes from './routes/authRoutes.js'
-import adminRoutes from './routes/adminRoutes.js'
+import authRoutes from './src/routes/authRoutes.js'
+import adminRoutes from './src/routes/adminRoutes.js'
 
 // dov env
 dotenv.config({path: '.env'});

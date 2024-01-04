@@ -1,10 +1,10 @@
 import { User } from "../models/userModel.js";
 import ErrorHandler from "../util/errorHandler.js"
-import catchAsyncError from "../util/catchAsyncError.js";
+import asyncHandler from "../util/asyncHandler.js";
 
 
 // register controller
-export const handleRegister = catchAsyncError(async (req, res, next) => {
+export const handleRegister = asyncHandler(async (req, res, next) => {
     const { name, email, password, confirm_password } = req.body;
     if (password !== confirm_password) return next(new ErrorHandler('Password do not match.', 400));
     if (!name || !email || !password || !confirm_password) return next(new ErrorHandler('Please, provide the necessary input values.', 409));
@@ -35,7 +35,7 @@ export const handleRegister = catchAsyncError(async (req, res, next) => {
 
 
 // login controller
-export const handleLogin = catchAsyncError(async (req, res, next) => {
+export const handleLogin = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) return next(new ErrorHandler('Please enter all the fields!', 400));
     const foundUser = await User.findOne({ email });
@@ -70,7 +70,7 @@ export const handleLogin = catchAsyncError(async (req, res, next) => {
 
 
 // logout controller
-export const handleLogout = catchAsyncError(async (req, res, next) => {
+export const handleLogout = asyncHandler(async (req, res, next) => {
     const { refreshToken } = req.cookies;
     if (!refreshToken) return next(new ErrorHandler('No token found!', 401));
     const foundUser = await User.findOne({ refreshToken });

@@ -1,7 +1,7 @@
-const catchAsyncError = (passedFunction) => {    
+const asyncHandler = (passedFunction) => {    
     return (req, res, next) => {
         Promise.resolve(passedFunction(req, res, next)).catch(next);
     };
 }
 
-export default catchAsyncError;
+export default asyncHandler;

@@ -12,6 +12,7 @@ import ErrorMiddleware from './src/middlewares/errorMiddleware.js';
 // import routes
 import authRoutes from './src/routes/authRoutes.js'
 import adminRoutes from './src/routes/adminRoutes.js'
+import tokenRoutes from './src/routes/tokenRoutes.js'
 
 // dov env
 dotenv.config({path: '.env'});
@@ -38,6 +39,7 @@ app.listen(PORT, () => console.log(`Listening on port number ${PORT}`));
 // routes
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/admin", adminRoutes)
+app.use("/api/v1/token", tokenRoutes)
 
 // error middleware
 app.use(ErrorMiddleware);

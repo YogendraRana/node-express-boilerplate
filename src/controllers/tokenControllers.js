@@ -5,15 +5,15 @@ import ErrorHandler from "../util/errorHandler.js";
 
 export const handleRefreshToken = asyncHandler(async (req, res, next) => {
     const { refreshToken } = req.cookies;
-    if (!refreshToken) return next(new ErrorHandler("Please login to continue!", 401));
+    if (!refreshToken) return next(new ErrorHandler("Token is unavailable. Please login to continue!", 401));
 
     const user = await User.findOne({ refreshToken });
-    if (!user) return next(new ErrorHandler("Please login to continue!", 403));
+    if (!user) return next(new ErrorHandler("User not found. Please login to continue!", 403));
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-        if (err || decoded._id.toString() !== user._id.toString()) return next(new ErrorHandler("Please login to continue!", 403));
+        if (err || decoded._id.toString() !== user._id.toString()) return next(new ErrorHandler("Invalid token. Please login to continue!", 403));
 
-        const accessToken = user.createAccessToken('1d');
+        const accessToken = user.createAccessToken();
         res.status(200).json({
             success: true,
             message: "Access token generated successfully!",

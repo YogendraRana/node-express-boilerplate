@@ -34,14 +34,14 @@ userSchema.methods.comparePassword = async function (password) {
 
 
 // create access token
-userSchema.methods.createAccessToken = function (expiresIn) {
-    return jwt.sign({ _id: this._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn });
+userSchema.methods.createAccessToken = function () {
+    return jwt.sign({ _id: this._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
 }
 
 
 // create refresh token of random uuid
-userSchema.methods.createRefreshToken = function (expiresIn) {
-    return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn });
+userSchema.methods.createRefreshToken = function () {
+    return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 }
 
 

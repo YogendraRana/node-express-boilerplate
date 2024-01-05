@@ -14,8 +14,8 @@ export const handleRegister = asyncHandler(async (req, res, next) => {
     const user = await User.create({ name, email, password });
 
     // create tokens
-    const accessToken = user.createAccessToken('1d');
-    const refreshToken = user.createRefreshToken('7d');
+    const accessToken = user.createAccessToken();
+    const refreshToken = user.createRefreshToken();
 
     // save refresh token in database
     user.refreshToken = refreshToken;
@@ -44,8 +44,8 @@ export const handleLogin = asyncHandler(async (req, res, next) => {
     if (!passwordMatched) return next(new ErrorHandler('Invalid credentials!', 400));
 
     // create tokens 
-    const accessToken = foundUser.createAccessToken('1d');
-    const refreshToken = foundUser.createRefreshToken('7d');
+    const accessToken = foundUser.createAccessToken();
+    const refreshToken = foundUser.createRefreshToken();
 
     // save refresh token in database
     foundUser.refreshToken = refreshToken;
